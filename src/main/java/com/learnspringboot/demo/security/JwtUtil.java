@@ -1,7 +1,10 @@
 package com.learnspringboot.demo.security;
 
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Component;
 
@@ -10,13 +13,23 @@ import io.jsonwebtoken.SignatureAlgorithm;
 
 @Component
 public class JwtUtil {
-    private String jwtSecret = "%demo$spring$boot*(%:/?%$#%^^&**hgj&*";
-    private long jwtExpriration = 30l*24*60*60*1000;
+
+    @Value("${secret}")
+    private String jwtSecret;
+
+    @Value("${expiration}")
+    private Long jwtExpriration;
 
     public String generateJwtToken(Authentication authentication) {
         UserPrincipal userPrincipal = (UserPrincipal)authentication.getPrincipal();
         long expiration = (new Date()).getTime() + jwtExpriration;
+        System.out.println(jwtSecret);
+        Map<String, Object> payload = new HashMap<>();
+        payload.put("username", userPrincipal.getUsername());
+        payload.put("email", userPrincipal.getEmail());
+
         return Jwts.builder()
+                .setClaims(payload)
                 .setSubject(userPrincipal.getUsername())
                 .setIssuedAt(new Date())
                 .setExpiration(new Date(expiration))
