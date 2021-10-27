@@ -1,6 +1,7 @@
 package com.learnspringboot.demo.controller;
 
 import com.learnspringboot.demo.dto.UserInfoDTO;
+import com.learnspringboot.demo.dto.mapper.UserMapper;
 import com.learnspringboot.demo.entity.User;
 import com.learnspringboot.demo.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +21,9 @@ public class UserController {
     @Autowired
     private UserService userService;
 
+    @Autowired
+    private UserMapper userMapper;
+
     @GetMapping("")
     public ResponseEntity<Page<?>> listUser(
             @RequestParam(name = "page", required = false, defaultValue = "0") Integer page,
@@ -35,7 +39,7 @@ public class UserController {
 
         Page<User> users = userService.findUser(pageable);
 
-        List<UserInfoDTO> userResponse = users.stream().map(User::mapToUserInfo).collect(Collectors.toList());
+        List<UserInfoDTO> userResponse = users.stream().map(userMapper::userToUserInfoDTO).collect(Collectors.toList());
         return new ResponseEntity<>(new PageImpl<>(userResponse), HttpStatus.OK);
     }
 }

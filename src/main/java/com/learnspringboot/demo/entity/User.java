@@ -4,6 +4,7 @@ import com.learnspringboot.demo.dto.UserInfoDTO;
 import lombok.Data;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 
 @Data
 @Table(name = "user")
@@ -15,18 +16,18 @@ public class User {
     private Long id;
 
     @Column
+    @NotNull
     private String username;
 
     @Column
+    @NotNull
     private String password;
 
     @Column
+    @NotNull
     private String email;
 
     @Column
+    @NotNull
     private boolean active;
-
-    public UserInfoDTO mapToUserInfo(){
-        return new UserInfoDTO(username, email);
-    }
 }
