@@ -23,7 +23,6 @@ public class JwtUtil {
     public String generateJwtToken(Authentication authentication) {
         UserPrincipal userPrincipal = (UserPrincipal)authentication.getPrincipal();
         long expiration = (new Date()).getTime() + jwtExpriration;
-        System.out.println(jwtSecret);
         Map<String, Object> payload = new HashMap<>();
         payload.put("username", userPrincipal.getUsername());
         payload.put("email", userPrincipal.getEmail());

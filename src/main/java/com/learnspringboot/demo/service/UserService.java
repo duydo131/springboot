@@ -5,6 +5,7 @@ import com.learnspringboot.demo.respository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -14,6 +15,9 @@ public class UserService {
 
     @Autowired
     private UserRepository userRepository;
+
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
     public Optional<User> findByUsername(String username) {
         return userRepository.findByUsername(username);
@@ -28,6 +32,7 @@ public class UserService {
     }
 
     public void save(User user) {
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
         userRepository.save(user);
     }
 
@@ -36,6 +41,9 @@ public class UserService {
     }
 
     public User update(User user) {
+        User oldUser = findByUsername(user.getUsername()).orElse(null);
+        if(oldUser == null) return null;
+        user.setPassword(passwordEncoder.encode(oldUser.getPassword()));
         return userRepository.save(user);
     }
 
