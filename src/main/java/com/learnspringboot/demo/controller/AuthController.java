@@ -64,22 +64,10 @@ public class AuthController {
 
     @PostMapping("/signup")
     public ResponseEntity<?> registerUser(@Validated @RequestBody SignupDTO signup) {
-        if(userService.existsByUsername(signup.getUsername())) {
-            return ResponseEntity
-                    .badRequest()
-                    .body(new MessageResponse("Error! Username is already!"));
-        }
-
-        if(userService.existsByEmail(signup.getEmail())) {
-            return ResponseEntity
-                    .badRequest()
-                    .body(new MessageResponse("Error! Email is already!"));
-        }
-
         User user = new User();
         user.setUsername(signup.getUsername());
         user.setEmail(signup.getEmail());
-        user.setPassword(passwordEncoder.encode(signup.getPassword()));
+        user.setPassword(signup.getPassword());
         user.setActive(true);
 
         userService.save(user);

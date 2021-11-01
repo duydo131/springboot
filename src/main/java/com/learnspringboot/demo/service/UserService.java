@@ -7,6 +7,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.validation.annotation.Validated;
 
 import java.util.Optional;
 
@@ -43,7 +44,7 @@ public class UserService {
     public User update(User user) {
         User oldUser = findByUsername(user.getUsername()).orElse(null);
         if(oldUser == null) return null;
-        user.setPassword(passwordEncoder.encode(oldUser.getPassword()));
+        user.setPassword(oldUser.getPassword());
         return userRepository.save(user);
     }
 

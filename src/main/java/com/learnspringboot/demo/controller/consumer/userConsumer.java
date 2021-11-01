@@ -1,7 +1,7 @@
-package com.learnspringboot.demo.consumer;
+package com.learnspringboot.demo.controller.consumer;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.learnspringboot.demo.constant.KafkaConfigConstant;
+import com.learnspringboot.demo.config.KafkaConfigConstant;
 import com.learnspringboot.demo.entity.User;
 import com.learnspringboot.demo.service.UserService;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
@@ -17,8 +17,6 @@ public class userConsumer {
 
     @Autowired
     private UserService userService;
-
-
 
     @KafkaListener(groupId = KafkaConfigConstant.GROUP_ID_JSON, topics = KafkaConfigConstant.TOPIC_CREATE,  containerFactory = KafkaConfigConstant.KAFKA_LISTENER_CONTAINER_FACTORY)
     public void receivedMessageCreate(Object message) throws JsonProcessingException {
