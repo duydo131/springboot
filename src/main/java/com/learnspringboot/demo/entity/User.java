@@ -29,5 +29,5 @@ public class User {
 
     @Column
     @NotNull
-    private boolean active;
+    private boolean active = true;
 }
